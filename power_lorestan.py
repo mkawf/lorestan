@@ -87,16 +87,16 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 found = True
                 break
 
-if not found:
-    if update.message.chat.type == "private":
-        await update.message.reply_text("❌ موردی با این مشخصات پیدا نشد.")
+    if found:
+        await update.message.reply_text(msg, parse_mode="Markdown")
     else:
-        pass  # در گروه سکوت کن
+        if update.message.chat.type == "private":
+            await update.message.reply_text("❌ موردی با این مشخصات پیدا نشد.")
+        else:
+            pass
 
-
-
-    except Exception as e:
-        await update.message.reply_text("⚠️ خطا در دسترسی به اطلاعات.")
+except Exception as e:
+    await update.message.reply_text("⚠️ خطا در دسترسی به اطلاعات.")
 
 # ==== اجرای ربات ====
 if __name__ == "__main__":
