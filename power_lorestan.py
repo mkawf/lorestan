@@ -77,22 +77,13 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 normalized_query in normalized_area
             ):
                 msg = (
-                    f"📍 اطلاعات خاموشی برای کد {code}:
+    f"📍 اطلاعات خاموشی برای کد {code}:\n\n"
+    f"🗺 منطقه شهرداری:\n{entry['zone']}\n\n"
+    f"⚡️ برق شما ساعت {entry['time']} قطع میشه😓\n\n"
+    f"📌 آدرس:\n{entry['address']}\n\n"
+    f"👨‍💻 طراحی ربات توسط [mamadmk](https://t.me/MamadMk)"
+)
 
-"
-                    f"🗺 منطقه شهرداری:
-{entry['zone']}
-
-"
-                    f"⚡️ برق شما ساعت {entry['time']} قطع میشه😓
-
-"
-                    f"📌 آدرس:
-{entry['address']}
-
-"
-                    f"👨‍💻 طراحی ربات توسط [mamadmk](https://t.me/MamadMk)"
-                )
                 found = True
                 break
 
