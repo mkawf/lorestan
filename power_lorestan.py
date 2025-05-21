@@ -8,7 +8,9 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, ContextTypes, filters
 
 # ==== تنظیمات ====
-TELEGRAM_TOKEN = "7661554404:AAHPB30nKnZLem9uI4GdvxG-TiEUKwJjJ6c"
+import os
+TELEGRAM_TOKEN = os.environ["TELEGRAM_TOKEN"]
+
 DATA_FILE = "data.json"
 
 # ==== تابع دریافت اطلاعات از سایت ====
@@ -85,8 +87,12 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 found = True
                 break
 
-        if not found:
-        pass
+if not found:
+    if update.message.chat.type == "private":
+        await update.message.reply_text("❌ موردی با این مشخصات پیدا نشد.")
+    else:
+        pass  # در گروه سکوت کن
+
 
 
     except Exception as e:
