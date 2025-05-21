@@ -48,21 +48,15 @@ def fetch_data():
     except Exception as e:
         print(f"⚠️ خطا در دریافت اطلاعات: {e}")
 
-
-# ==== پاسخ به پیام‌های کاربران ====
-async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.message.text.strip()
+# ==== تبدیل عدد انگلیسی به فارسی ====
 def to_persian_digits(text):
     eng_to_fa = str.maketrans("0123456789", "۰۱۲۳۴۵۶۷۸۹")
     return text.translate(eng_to_fa)
 
 # ==== پاسخ به پیام‌های کاربران ====
-def to_persian_digits(text):
-    eng_to_fa = str.maketrans("0123456789", "۰۱۲۳۴۵۶۷۸۹")
-    return text.translate(eng_to_fa)
-
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = to_persian_digits(update.message.text.strip())
+    normalized_query = query.replace("-", " ").replace("‌", "").strip()
 
     try:
         with open("data.json", "r", encoding="utf-8") as f:
@@ -72,24 +66,38 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         msg = ""
 
         for code, entry in data.items():
+            normalized_address = entry["address"].replace("-", " ").replace("‌", "")
+            normalized_zone = entry.get("zone", "").replace("-", " ").replace("‌", "")
+            normalized_area = entry.get("area", "").replace("-", " ").replace("‌", "")
+
             if (
-                query == code or
-                f" {query} " in f" {entry['address']} " or
-                f" {query} " in f" {entry.get('zone', '')} " or
-                f" {query} " in f" {entry.get('area', '')} "
+                normalized_query == code or
+                normalized_query in normalized_address or
+                normalized_query in normalized_zone or
+                normalized_query in normalized_area
             ):
                 msg = (
-                    f"📍 اطلاعات خاموشی برای کد {code}:\n\n"
-                    f"🗺 منطقه شهرداری:\n{entry['zone']}\n\n"
-                    f"⚡️ برق شما ساعت {entry['time']} قطع میشه😓\n\n"
-                    f"📌 آدرس:\n{entry['address']}\n\n"
+                    f"📍 اطلاعات خاموشی برای کد {code}:
+
+"
+                    f"🗺 منطقه شهرداری:
+{entry['zone']}
+
+"
+                    f"⚡️ برق شما ساعت {entry['time']} قطع میشه😓
+
+"
+                    f"📌 آدرس:
+{entry['address']}
+
+"
                     f"👨‍💻 طراحی ربات توسط [mamadmk](https://t.me/MamadMk)"
                 )
                 found = True
                 break
 
         if found:
-            await update.message.reply_text(msg, parse_mode="Markdown")
+            await update.message.reply_text(msg, parse_mode="Markdown", disable_web_page_preview=True)
         else:
             if update.message.chat.type == "private":
                 await update.message.reply_text("❌ موردی با این مشخصات پیدا نشد.")
@@ -98,7 +106,6 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     except Exception as e:
         await update.message.reply_text("⚠️ خطا در دسترسی به اطلاعات.")
-
 
 # ==== اجرای ربات ====
 if __name__ == "__main__":
@@ -121,4 +128,3 @@ if __name__ == "__main__":
 
     print("🤖 ربات فعال شد.")
     app.run_polling()
-
