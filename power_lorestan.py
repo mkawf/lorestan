@@ -69,6 +69,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             data = json.load(f)
 
         found = False
+        msg = ""
+
         for code, entry in data.items():
             if (
                 query == code or
@@ -81,22 +83,22 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     f"🗺 منطقه شهرداری:\n{entry['zone']}\n\n"
                     f"⚡️ برق شما ساعت {entry['time']} قطع میشه😓\n\n"
                     f"📌 آدرس:\n{entry['address']}\n\n"
-
+                    f"👨‍💻 طراحی ربات توسط [mamadmk](https://t.me/MamadMk)"
                 )
-                await update.message.reply_text(msg, parse_mode="Markdown")
                 found = True
                 break
 
-    if found:
-        await update.message.reply_text(msg, parse_mode="Markdown")
-    else:
-        if update.message.chat.type == "private":
-            await update.message.reply_text("❌ موردی با این مشخصات پیدا نشد.")
+        if found:
+            await update.message.reply_text(msg, parse_mode="Markdown")
         else:
-            pass
+            if update.message.chat.type == "private":
+                await update.message.reply_text("❌ موردی با این مشخصات پیدا نشد.")
+            else:
+                pass
 
-except Exception as e:
-    await update.message.reply_text("⚠️ خطا در دسترسی به اطلاعات.")
+    except Exception as e:
+        await update.message.reply_text("⚠️ خطا در دسترسی به اطلاعات.")
+
 
 # ==== اجرای ربات ====
 if __name__ == "__main__":
