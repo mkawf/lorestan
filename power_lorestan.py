@@ -74,9 +74,9 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for code, entry in data.items():
             if (
                 query == code or
-                query in entry["address"] or
-                query in entry.get("zone", "") or
-                query in entry.get("area", "")
+                f" {query} " in f" {entry['address']} " or
+                f" {query} " in f" {entry.get('zone', '')} " or
+                f" {query} " in f" {entry.get('area', '')} "
             ):
                 msg = (
                     f"📍 اطلاعات خاموشی برای کد {code}:\n\n"
