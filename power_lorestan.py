@@ -77,7 +77,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 msg = (
                     f"📍 اطلاعات خاموشی برای کد {code}:\n\n"
                     f"🗺 منطقه شهرداری:\n{entry['zone']}\n\n"
-                    f"🕓 ساعت قطع و وصل:\n{entry['time']}\n\n"
+                    f"⚡️ برق شما ساعت {entry['time']} قطع میشه😓\n\n"
                     f"📌 آدرس:\n{entry['address']}\n\n"
 
                 )
@@ -86,7 +86,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 break
 
         if not found:
-        #    await update.message.reply_text("❌ موردی با این مشخصات پیدا نشد.")
+        pass
+
 
     except Exception as e:
         await update.message.reply_text("⚠️ خطا در دسترسی به اطلاعات.")
